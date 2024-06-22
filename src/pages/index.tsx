@@ -38,7 +38,7 @@ const choiceLabel = ["A.", "B.", "C.", "D."];
 
 export default function Home() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [question, setQuestion] = useState<Question | null>();
+  const [question, setQuestion] = useState<Question>(questions[0]!);
   const toast = useToast();
 
   useEffect(() => {
