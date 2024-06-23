@@ -23,7 +23,7 @@ const questions: Question[] = [
   },
   {
     question: "What insect produces honey?",
-    options: ["Bee", "Cocroach", "Butterfly", "Beetle"],
+    options: ["Bee", "Cockroach", "Butterfly", "Beetle"],
     answer: 0,
   },
   {
@@ -38,12 +38,12 @@ const choiceLabel = ["A.", "B.", "C.", "D."];
 
 export default function Home() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [question, setQuestion] = useState<Question>(questions[0]!);
+  const [question, setQuestion] = useState<Question | undefined>(questions[0]);
   const toast = useToast();
 
   useEffect(() => {
     if (currentQuestionIndex >= questions.length) {
-      setQuestion(null);
+      setQuestion(undefined);
     } else {
       setQuestion(questions[currentQuestionIndex]);
     }
@@ -67,8 +67,11 @@ export default function Home() {
       </Head>
       <main>
         <div className="min-w-screen flex min-h-screen flex-col items-center justify-center bg-[var(--bg-color)]">
+          <div>
+            <h1 className="text-[var(--text-color)] mb-20 text-3xl">Quiz For Eri</h1>
+          </div>
           {/* Answer area */}
-          <div className="flex flex-wrap justify-center">
+          <div className="flex flex-wrap justify-center my-10">
             {questions.slice(0, currentQuestionIndex).map((question, i) => (
               <div
                 className="mx-1 text-[var(--main-color)] text-2xl"
@@ -88,7 +91,7 @@ export default function Home() {
             <span className="text-[var(--main-color)] text-2xl">?</span>
           </div>
           {/* Question area */}
-          <div className="mt-12">
+          <div>
             {question && (
               <div className="m-5 rounded-lg bg-[--sub-alt-color] p-5 text-[var(--text-color)]">
                 <p className="my-2">{question.question}</p>
@@ -104,7 +107,7 @@ export default function Home() {
                         } else {
                           // else show toast
                           toast({
-                            title: "Dummy Eri",
+                            title: "Baka Eri",
                             status: "error",
                             duration: 1000,
                           });
