@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
+import ConfettiExplosion from "react-confetti-explosion";
 
 interface Question {
   question: string;
@@ -17,7 +18,7 @@ const questions: Question[] = [
   },
   {
     question:
-      "What was the first letter of the crepe dessert place we went to?",
+      "What was the first letter of the crepe cake place we went to?",
     options: ["Z", "X", "U", "F"],
     answer: 2,
   },
@@ -39,6 +40,7 @@ const choiceLabel = ["A.", "B.", "C.", "D."];
 export default function Home() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [question, setQuestion] = useState<Question | undefined>(questions[0]);
+  const [isExploding, setIsExploding] = useState(false);
   const toast = useToast();
 
   useEffect(() => {
@@ -50,13 +52,14 @@ export default function Home() {
   }, [currentQuestionIndex]);
 
   const celebrate = () => {
+    setIsExploding(true);
     toast({
       title: "Yay!",
       description: "You can open the gift now :)",
       status: "success",
       duration: 3000,
     });
-  }
+  };
 
   return (
     <>
@@ -68,13 +71,15 @@ export default function Home() {
       <main>
         <div className="min-w-screen flex min-h-screen flex-col items-center justify-center bg-[var(--bg-color)]">
           <div>
-            <h1 className="text-[var(--text-color)] mb-20 text-3xl">Quiz For Eri</h1>
+            <h1 className="mb-20 text-3xl text-[var(--text-color)]">
+              Quiz For Eri
+            </h1>
           </div>
           {/* Answer area */}
-          <div className="flex flex-wrap justify-center my-10">
+          <div className="my-10 flex flex-wrap justify-center">
             {questions.slice(0, currentQuestionIndex).map((question, i) => (
               <div
-                className="mx-1 text-[var(--main-color)] text-2xl"
+                className="mx-1 text-2xl text-[var(--main-color)]"
                 key={`done-answer-${i}`}
               >
                 {question.options[question.answer]}
@@ -82,13 +87,13 @@ export default function Home() {
             ))}
             {questions.slice(currentQuestionIndex).map((question, i) => (
               <div
-                className="mx-1 text-[var(--main-color)] text-2xl"
+                className="mx-1 text-2xl text-[var(--main-color)]"
                 key={`not-done-answer-${i}`}
               >
                 {"_".repeat(question.options[question.answer]?.length ?? 5)}
               </div>
             ))}
-            <span className="text-[var(--main-color)] text-2xl">?</span>
+            <span className="text-2xl text-[var(--main-color)]">?</span>
           </div>
           {/* Question area */}
           <div>
@@ -132,6 +137,11 @@ export default function Home() {
               </div>
             )}
           </div>
+        </div>
+        <div className="absolute top-1/2 left-1/2">
+          {isExploding && (
+            <ConfettiExplosion onComplete={() => setIsExploding(false)} />
+          )}
         </div>
       </main>
     </>
